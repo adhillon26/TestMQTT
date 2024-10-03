@@ -5,7 +5,7 @@
 VAR
 	 fbMqttClient   : FB_IotMqttClient;
     bSetParameter   : BOOL := TRUE;
-    bConnect        : BOOL := TRUE;
+    bConnect        : BOOL := FALSE;
 	  (* published message *)
  	sTopicPub   	: STRING(255) := 'TwinCAT_CX5166C2';
     sPayloadPub 	: STRING(255);
@@ -29,7 +29,7 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[iEL3255_Pub := iEL3255_In;
-
+//State machine
 CASE state OF
 	10:
 		IF bSetParameter THEN
@@ -39,6 +39,7 @@ CASE state OF
 			fbMqttClient.ipMessageQueue := fbMessageQueue;
 			bSetParameter := FALSE;
 		END_IF
+		bConnect:=True;
 		IF fbMqttClient.bConnected THEN
 			state := 20;
 		END_IF
@@ -66,7 +67,7 @@ CASE state OF
 					bQueue:= FALSE );
     END_IF
 END_CASE
-fbMqttClient.Execute(bConnect);
+fbMqttClient.Execute(bConnect:= bConnect);
 
 ]]></ST>
     </Implementation>
