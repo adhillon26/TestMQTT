@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="MAIN" Id="{d84ad102-4f0d-4102-a29c-46f86ec5cdb8}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	 fbMqttClient   : FB_IotMqttClient;
+    bSetParameter   : BOOL := TRUE;
+    bConnect        : BOOL := TRUE;
+	  (* published message *)
+ 	sTopicPub   	: STRING(255) := 'TwinCAT_CX5166C2';
+    sPayloadPub 	: STRING(255);
+    fbTimer 		: TON := (PT:=T#1S);
+    iCount 			: UDINT;
+	  (* received message *)
+    bSubscribed    	: BOOL;
+    sTopicSub      	: STRING(255) := 'TwinCAT_CX5166C2';
+    {attribute 'TcEncoding':='UTF-8'}
+    sTopicRcv      	: STRING(255);
+    {attribute 'TcEncoding':='UTF-8'}
+    sPayloadRcv    	: STRING(255);
+    fbMessageQueue 	: FB_IotMqttMessageQueue;
+    fbMessage      	: FB_IotMqttMessage;
+	state 			: INT;
+	
+	iEL3255_In	AT %I*	: INT;
+	iEL3255_Pub	AT %Q*	: INT;
+	iEL3255_Sub	AT %I*	: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[iEL3255_Pub := iEL3255_In;
+
+CASE state OF
+	10:
+		IF bSetParameter THEN
+			bSetParameter               := FALSE;
+			fbMqttClient.sHostName      := '169.254.135.73';
+			fbMqttClient.nHostPort      := 1883;
+			fbMqttClient.ipMessageQueue := fbMessageQueue;
+			bSetParameter := FALSE;
+		END_IF
+		IF fbMqttClient.bConnected THEN
+			state := 20;
+		END_IF
+	20:
+	IF fbMessageQueue.nQueuedMessages > 0 THEN
+  	  	IF fbMessageQueue.Dequeue(fbMessage:=fbMessage) THEN
+			fbMessage.GetTopic(pTopic:=ADR(sTopicRcv), nTopicSize:=SIZEOF(sTopicRcv) );
+			fbMessage.GetPayload(pPayload:=ADR(sPayloadRcv), nPayloadSize:=SIZEOF(sPayloadRcv), bSetNullTermination:=FALSE);
+		END_IF
+	END_IF
+	
+	IF NOT bSubscribed THEN
+		bSubscribed := fbMqttClient.Subscribe(sTopic:=sTopicSub, eQoS:=TcIotMqttQos.AtMostOnceDelivery);
+	END_IF
+    fbTimer(IN:=TRUE);
+    IF fbTimer.Q THEN // publish new payload every second
+        fbTimer(IN:=FALSE);
+        iCount := iCount + 1;
+        sPayloadPub := CONCAT('MyMessage', TO_STRING(iCount));
+        fbMqttClient.Publish(sTopic:= sTopicPub,
+					pPayload:= ADR(sPayloadPub), 
+					nPayloadSize:= LEN2(ADR(sPayloadPub))+1, 
+					eQoS:= TcIotMqttQos.AtMostOnceDelivery, 
+					bRetain:= FALSE, 
+					bQueue:= FALSE );
+    END_IF
+END_CASE
+fbMqttClient.Execute(bConnect);
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.10" ClassName="CBoxDef" SubType="9154">
+	<Box Id="13" BoxType="9154">
+		<Name>__FILENAME__</Name>
+		<ImageId>99</ImageId>
+		<Vars VarGrpType="1">
+			<Name>Inputs</Name>
+			<Var BoxStateVariable="true">
+				<Name>State</Name>
+				<Comment><![CDATA[0x0001 = Symbol info not received
+]]></Comment>
+				<Type>UINT</Type>
+			</Var>
+		</Vars>
+		<Vars VarGrpType="2">
+			<Name>Outputs</Name>
+			<Var BoxStateVariable="true">
+				<Name>Ctrl</Name>
+				<Type>UINT</Type>
+			</Var>
+		</Vars>
+		<Publisher/>
+	</Box>
+</TcSmItem>

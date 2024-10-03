@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.10" ClassName="CBoxDef" SubType="9153">
+	<Box Id="13" BoxType="9153">
+		<Name>__FILENAME__</Name>
+		<ImageId>100</ImageId>
+		<Vars VarGrpType="1">
+			<Name>Inputs</Name>
+			<Var BoxStateVariable="true">
+				<Name>State</Name>
+				<Type>UINT</Type>
+				<BitOffs>16</BitOffs>
+			</Var>
+			<Var BoxStateVariable="true">
+				<Name>Quality</Name>
+				<Comment><![CDATA[Duration the variable is not refreshed (in 100µs)]]></Comment>
+				<Type>UINT</Type>
+				<BitOffs>32</BitOffs>
+			</Var>
+			<Var BoxStateVariable="true">
+				<Name>Timestamp</Name>
+				<Comment><![CDATA[Time when the variable was published]]></Comment>
+				<Type>ULINT</Type>
+				<BitOffs>48</BitOffs>
+			</Var>
+		</Vars>
+		<Vars VarGrpType="2">
+			<Name>Outputs</Name>
+			<Var BoxStateVariable="true">
+				<Name>Ctrl</Name>
+				<Type>UINT</Type>
+				<BitOffs>32</BitOffs>
+			</Var>
+		</Vars>
+		<Subscriber Topic="Tx" Dataformat="2">
+			<Symbol Id="1" Length="2">
+				<Name>EL3255</Name>
+				<ImageId>98</ImageId>
+				<Symbols VarGrpType="1">
+					<Name>Inputs</Name>
+					<Var>
+						<Name>VarData</Name>
+						<Type>INT</Type>
+						<BitOffs>112</BitOffs>
+					</Var>
+				</Symbols>
+				<Symbols VarGrpType="2">
+					<Name>Outputs</Name>
+				</Symbols>
+			</Symbol>
+		</Subscriber>
+	</Box>
+</TcSmItem>

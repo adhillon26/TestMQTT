@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.10" ClassName="CDeviceDef" SubType="158">
+	<Device Id="2" DevType="158">
+		<Name>__FILENAME__</Name>
+		<DevData>0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</DevData>
+		<Image Id="3" AddrType="1" ImageType="3" SizeIn="8" SizeOut="22">
+			<Name>Image</Name>
+		</Image>
+		<Box File="Box 13 (Publisher).xti" Id="13"/>
+		<Box File="Box 14 (Subscriber).xti" Id="14"/>
+		<Mqtt DeviceTopic="Device 2 (Iot Mqtt Controller)"/>
+	</Device>
+</TcSmItem>
